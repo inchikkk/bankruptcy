@@ -142,10 +142,23 @@
       </div>
       <div class="pause-overlay hidden" id="pauseOverlay">
         <div class="pause-card">
-          <h2>Пауза</h2>
-          <div class="pause-actions">
-            <button class="btn-primary" data-action="resume">Вернуться к делу</button>
-            <button class="btn-ghost" data-action="exit">Выход в главное меню</button>
+          <div class="pause-card-header">
+            <div class="pause-icon-wrap">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="48" height="48" rx="10" fill="#EAF0F7"/>
+                <rect x="11" y="14" width="8" height="20" rx="3" fill="#416B9F"/>
+                <rect x="29" y="14" width="8" height="20" rx="3" fill="#416B9F"/>
+              </svg>
+            </div>
+            <h2 class="pause-card-title">Пауза</h2>
+          </div>
+          <div class="pause-divider"></div>
+          <div class="pause-card-body">
+            <p class="pause-section-label">Действия с делом</p>
+            <div class="pause-actions">
+              <button class="btn-primary" data-action="resume">Вернуться к делу</button>
+              <button class="btn-ghost" data-action="exit">Выход в главное меню</button>
+            </div>
           </div>
         </div>
       </div>

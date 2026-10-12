@@ -346,10 +346,21 @@ var pauseBtn = document.querySelector('[data-action="pause"]');
 if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
 
 document.addEventListener('keydown', function(e) {
-  if (e.key !== 'Escape') return;
+  if (e.key !== 'Escape' && e.keyCode !== 27) return;
   var pauseOverlay = $('pauseOverlay');
-  if (pauseOverlay && !pauseOverlay.classList.contains('hidden')) {
-    pauseOverlay.classList.add('hidden');
+  var settingsOverlay = $('settingsOverlay');
+  // Сначала проверяем настройки
+  if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) {
+    settingsOverlay.classList.add('hidden');
+    return;
+  }
+  // Переключаем паузу
+  if (pauseOverlay) {
+    if (pauseOverlay.classList.contains('hidden')) {
+      pauseOverlay.classList.remove('hidden');
+    } else {
+      pauseOverlay.classList.add('hidden');
+    }
   }
 });
 
