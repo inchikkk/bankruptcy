@@ -14,12 +14,13 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  font-size: 13px;
 }
 .app-container { display: flex; flex-direction: column; min-height: 100vh; }
 .app-header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 16px 24px;
+  padding: 10px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,30 +29,30 @@ body {
   z-index: 100;
   box-shadow: var(--card-shadow);
 }
-.header-left { display: flex; align-items: center; gap: 12px; }
-.logo-mark { display: flex; align-items: center; gap: 10px; }
-.logo-text { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; color: var(--text); }
-.header-breadcrumb { display: flex; align-items: center; gap: 8px; }
-.breadcrumb-dot { width: 6px; height: 6px; background: var(--text-secondary); border-radius: 50%; }
-.breadcrumb-text { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
-.main-content { flex: 1; padding: 32px; max-width: 1400px; width: 100%; margin: 0 auto; }
+.header-left { display: flex; align-items: center; gap: 8px; }
+.logo-mark { display: flex; align-items: center; gap: 8px; }
+.logo-text { font-size: 12px; font-weight: 700; letter-spacing: 0.3px; color: var(--text); }
+.header-breadcrumb { display: flex; align-items: center; gap: 6px; }
+.breadcrumb-dot { width: 5px; height: 5px; background: var(--text-secondary); border-radius: 50%; }
+.breadcrumb-text { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.main-content { flex: 1; padding: 18px; max-width: 1400px; width: 100%; margin: 0 auto; }
 .screen { display: none; }
 .screen.active { display: block; }
 /* Genesis */
-.genesis-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: center; min-height: calc(100vh - 160px); }
-.genesis-text .section-tag { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-.tag-line { width: 40px; height: 2px; background: var(--primary); }
-.tag-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--primary); }
-.genesis-title { font-size: 56px; font-weight: 900; line-height: 1.1; color: var(--text); margin-bottom: 24px; }
-.genesis-desc { font-size: 18px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 40px; max-width: 480px; }
-.genesis-actions { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.genesis-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 32px; align-items: center; min-height: calc(100vh - 120px); }
+.genesis-text .section-tag { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.tag-line { width: 32px; height: 2px; background: var(--primary); }
+.tag-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: var(--primary); }
+.genesis-title { font-size: 42px; font-weight: 900; line-height: 1.1; color: var(--text); margin-bottom: 16px; }
+.genesis-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 28px; max-width: 480px; }
+.genesis-actions { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
 .btn-primary {
-  padding: 16px 32px;
+  padding: 12px 24px;
   background: var(--primary);
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -59,24 +60,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
+  gap: 10px;
   text-align: left;
 }
 .btn-primary:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4); }
 .btn-ghost {
-  padding: 16px 32px;
+  padding: 12px 24px;
   background: transparent;
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
+  gap: 10px;
   text-align: left;
 }
 .btn-ghost:hover { background: var(--surface); border-color: var(--text-secondary); }
@@ -88,7 +89,7 @@ body {
 .genesis-actions {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
   align-items: flex-start;
   width: 100%;
 }
