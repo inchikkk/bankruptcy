@@ -302,11 +302,6 @@ function loadCaseFromHistory(entry) {
   showCase();
 }
 
-function showStats() {
-  showScreen('statsScreen');
-  updateBreadcrumb('Статистика');
-}
-
 function showHistory() {
   hideAllOverlays();
   loadHistory();
@@ -315,15 +310,30 @@ function showHistory() {
   updateBreadcrumb('История дел');
 }
 
+function showStats() {
+  hideAllOverlays();
+  renderStats();
+  showScreen('statsScreen');
+  updateBreadcrumb('Статистика');
+}
+
+function showAchievements() {
+  hideAllOverlays();
+  renderAchievements();
+  showScreen('achievementsScreen');
+  updateBreadcrumb('Достижения');
+}
+
 function togglePause() {
   var overlay = $('pauseOverlay');
   if (overlay) overlay.classList.toggle('hidden');
 }
 
 function showSettings() {
-  hideAllOverlays(); // Скрываем другие оверлеи
-  var settingsOv = $('settingsOverlay');
-  if (settingsOv) settingsOv.classList.remove('hidden');
+  hideAllOverlays();
+  renderSettings();
+  showScreen('settingsScreen');
+  updateBreadcrumb('Настройки');
 }
 
 // === Обработчики событий ===
@@ -332,16 +342,31 @@ document.querySelectorAll('[data-action]').forEach(function(btn) {
     var action = btn.dataset.action;
     if (action === 'play') { showGenesis(); animateLoading(); }
     else if (action === 'history') { showHistory(); }
+    else if (action === 'stats') { showStats(); }
+    else if (action === 'achievements') { showAchievements(); }
     else if (action === 'resume') { var pauseEl = $('pauseOverlay'); if (pauseEl) pauseEl.classList.add('hidden'); }
     else if (action === 'exit') { location.reload(); }
     else if (action === 'back') { 
       // Проверяем, какой overlay сейчас открыт
       var pauseOverlay = $('pauseOverlay');
       var settingsOverlay = $('settingsOverlay');
+      // Также проверяем экраны settingsScreen, statsScreen, achievementsScreen, historyScreen
+      var settingsScreen = $('settingsScreen');
+      var statsScreen = $('statsScreen');
+      var achievementsScreen = $('achievementsScreen');
+      var historyScreen = $('historyScreen');
       if (pauseOverlay && !pauseOverlay.classList.contains('hidden')) {
         pauseOverlay.classList.add('hidden');
       } else if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) {
         settingsOverlay.classList.add('hidden');
+      } else if (settingsScreen && !settingsScreen.classList.contains('hidden')) {
+        showGenesis();
+      } else if (statsScreen && !statsScreen.classList.contains('hidden')) {
+        showGenesis();
+      } else if (achievementsScreen && !achievementsScreen.classList.contains('hidden')) {
+        showGenesis();
+      } else if (historyScreen && !historyScreen.classList.contains('hidden')) {
+        showGenesis();
       } else {
         showGenesis();
       }
@@ -378,9 +403,196 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// === Рендер статистики ===
+function renderStats() {
+  var container = $('statsScroll');
+  if (!container) return;
+  var history = loadHistory();
+  if (history.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:40px;">Статистика пуста. Сыграйте хотя бы одно дело.</p>';
+    return;
+  }
+  var totalCases = history.length;
+  var totalDebt = history.reduce(function(s, c) { return s + (c.debt || 0); }, 0);
+  var totalIncome = history.reduce(function(s, c) { return s + (c.income || 0); }, 0);
+  var avgDebt = totalCases ? Math.round(totalDebt / totalCases) : 0;
+  var avgIncome = totalCases ? Math.round(totalIncome / totalCases) : 0;
+  var maxDebt = Math.max.apply(null, history.map(function(c) { return c.debt || 0; }));
+  var minDebt = Math.min.apply(null, history.map(function(c) { return c.debt || 0; }));
+
+  container.innerHTML =
+    '<div class="stat-grid">' +
+      '<div class="stat-card"><div class="stat-value">' + totalCases + '</div><div class="stat-label">Всего дел</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + fmt(totalDebt) + ' ₽</div><div class="stat-label">Суммарный долг</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + fmt(avgDebt) + ' ₽</div><div class="stat-label">Средний долг</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + fmt(maxDebt) + ' ₽</div><div class="stat-label">Макс. долг</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + fmt(minDebt) + ' ₽</div><div class="stat-label">Мин. долг</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + fmt(avgIncome) + ' ₽</div><div class="stat-label">Средний доход</div></div>' +
+    '</div>';
+}
+
+// === Рендер достижений ===
+function renderAchievements() {
+  var container = $('achievementsScroll');
+  if (!container) return;
+  var history = loadHistory();
+  var totalCases = history.length;
+
+  var achievements = [
+    { id: 'first_case', title: 'Первое дело', desc: 'Сыграйте 1 дело', icon: '🏆', unlocked: totalCases >= 1 },
+    { id: 'five_cases', title: 'Опытный менеджер', desc: 'Сыграйте 5 дел', icon: '📊', unlocked: totalCases >= 5 },
+    { id: 'ten_cases', title: 'Ветеран', desc: 'Сыграйте 10 дел', icon: '⭐', unlocked: totalCases >= 10 },
+    { id: 'big_debt', title: 'Крупный кредитор', desc: 'Долг более 5 млн в одном деле', icon: '💰', unlocked: history.some(function(c){ return (c.debt||0) >= 5000000; }) },
+    { id: 'rich_debtor', title: 'Богатый должник', desc: 'Доход более 500к', icon: '💼', unlocked: history.some(function(c){ return (c.income||0) >= 500000; }) },
+  ];
+
+  container.innerHTML = '<div class="achievements-grid">' + achievements.map(function(a) {
+    return '<div class="achievement-card ' + (a.unlocked ? '' : 'locked') + '">' +
+      '<div class="achievement-icon">' + a.icon + '</div>' +
+      '<div class="achievement-title">' + a.title + '</div>' +
+      '<div class="achievement-desc">' + a.desc + '</div>' +
+      '<div class="achievement-status">' + (a.unlocked ? '✅ Разблокировано' : '🔒 Заблокировано') + '</div>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
 // === Запуск ===
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', showGenesis);
+  document.addEventListener('DOMContentLoaded', initApp);
 } else {
+  initApp();
+}
+
+function initApp() {
+  // Применяем сохранённую тему
+  var theme = localStorage.getItem('theme') || 'dark';
+  document.body.setAttribute('data-theme', theme);
   showGenesis();
+}
+
+// === Рендер настроек ===
+function renderSettings() {
+  var container = $('settingsScroll');
+  if (!container) return;
+
+  var savedTheme = localStorage.getItem('theme') || 'dark';
+  var savedSound = localStorage.getItem('soundEnabled') !== 'false';
+  var savedVolume = localStorage.getItem('volume') || '60';
+  var savedBgMusic = localStorage.getItem('bgMusicEnabled') !== 'false';
+  var savedMusicVolume = localStorage.getItem('musicVolume') || '35';
+
+                  var svg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+  function icon(path) { return svg + path + '</svg>'; }
+
+  container.innerHTML = '' +
+    '<div class="settings-panel">' +
+      '<div class="settings-group">' +
+        '<div class="settings-group-label">Интерфейс</div>' +
+        '<div class="settings-item">' +
+          '<div class="settings-item-left">' +
+            '<div class="settings-item-icon">' + icon('<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>') + '</div>' +
+            '<div class="settings-item-text">' +
+              '<div class="settings-item-title">Тема</div>' +
+              '<div class="settings-item-subtitle">Цветовая схема приложения</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="settings-item-control">' +
+            '<select class="settings-select" id="themeSelect">' +
+              '<option value="dark" ' + (savedTheme === 'dark' ? 'selected' : '') + '>Тёмная</option>' +
+              '<option value="light" ' + (savedTheme === 'light' ? 'selected' : '') + '>Светлая</option>' +
+              '<option value="blue" ' + (savedTheme === 'blue' ? 'selected' : '') + '>Синяя</option>' +
+            '</select>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="settings-group">' +
+        '<div class="settings-group-label">Звук</div>' +
+        '<div class="settings-item">' +
+          '<div class="settings-item-left">' +
+            '<div class="settings-item-icon">' + icon('<path d="M11 5L6 9H2v6h4l5 4V5z"/>') + '</div>' +
+            '<div class="settings-item-text">' +
+              '<div class="settings-item-title">Звуковые эффекты</div>' +
+              '<div class="settings-item-subtitle">Включить/выключить звуки интерфейса</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="settings-item-control">' +
+            '<label class="settings-switch">' +
+              '<input type="checkbox" id="soundToggle" ' + (savedSound ? 'checked' : '') + '>' +
+              '<span class="settings-switch-slider"></span>' +
+            '</label>' +
+          '</div>' +
+        '</div>' +
+        '<div class="settings-item">' +
+          '<div class="settings-item-left">' +
+            '<div class="settings-item-icon">' + icon('<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>') + '</div>' +
+            '<div class="settings-item-text">' +
+              '<div class="settings-item-title">Громкость звуков</div>' +
+              '<div class="settings-item-subtitle">' + savedVolume + '%</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="settings-item-control">' +
+            '<input type="range" class="settings-range" id="volume" min="0" max="100" value="' + savedVolume + '">' +
+          '</div>' +
+        '</div>' +
+        '<div class="settings-item">' +
+          '<div class="settings-item-left">' +
+            '<div class="settings-item-icon">' + icon('<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>') + '</div>' +
+            '<div class="settings-item-text">' +
+              '<div class="settings-item-title">Фоновая музыка</div>' +
+              '<div class="settings-item-subtitle">Включить/выключить музыку в меню</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="settings-item-control">' +
+            '<label class="settings-switch">' +
+              '<input type="checkbox" id="bgMusicToggle" ' + (savedBgMusic ? 'checked' : '') + '>' +
+              '<span class="settings-switch-slider"></span>' +
+            '</label>' +
+          '</div>' +
+        '</div>' +
+        '<div class="settings-item">' +
+          '<div class="settings-item-left">' +
+            '<div class="settings-item-icon">' + icon('<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>') + '</div>' +
+            '<div class="settings-item-text">' +
+              '<div class="settings-item-title">Громкость музыки</div>' +
+              '<div class="settings-item-subtitle">' + savedMusicVolume + '%</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="settings-item-control">' +
+            '<input type="range" class="settings-range" id="musicVolume" min="0" max="100" value="' + savedMusicVolume + '">' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="settings-footer"><button class="btn-primary" id="saveSettingsBtn">Сохранить</button></div>' +
+    '</div>';
+
+  var vol = $('volume');
+  var musVol = $('musicVolume');
+  if (vol) { vol.addEventListener('input', updateSub); }
+  if (musVol) { musVol.addEventListener('input', updateSub); }
+  function updateSub(e) {
+    var input = e.target;
+    var sub = input.parentElement.previousElementSibling.querySelector('.settings-item-subtitle');
+    if (sub) sub.textContent = input.value + '%';
+  }
+
+  var saveBtn = $('saveSettingsBtn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function() {
+      var theme = $('themeSelect').value;
+      var sound = $('soundToggle').checked;
+      var volume = $('volume').value;
+      var bgMusic = $('bgMusicToggle').checked;
+      var musicVolume = $('musicVolume').value;
+      localStorage.setItem('theme', theme);
+      localStorage.setItem('soundEnabled', sound);
+      localStorage.setItem('volume', volume);
+      localStorage.setItem('bgMusicEnabled', bgMusic);
+      localStorage.setItem('musicVolume', musicVolume);
+      document.body.setAttribute('data-theme', theme);
+      var originalText = saveBtn.textContent;
+      saveBtn.textContent = 'Сохранено!';
+      saveBtn.style.background = '#10b981';
+      setTimeout(function() { saveBtn.textContent = originalText; saveBtn.style.background = ''; }, 1500);
+    });
+  }
 }
