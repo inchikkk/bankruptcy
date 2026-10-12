@@ -38,14 +38,14 @@
           </div>
           <div class="genesis-visual" id="genesisVisual">
             <div class="generation-card" id="generationCard">
-              <div class="gen-spinner-wrap" id="genSpinnerWrap">
-                <div class="gen-spinner" id="genSpinner"></div>
-                <div class="gen-progress-track">
-                  <div class="gen-progress-fill" id="genProgressFill"></div>
-                </div>
-                <p class="gen-progress-text" id="genProgressText">Генерация дела 0%</p>
-                <p class="gen-hint">Подождите, пока материалы будут готовы.</p>
+              <div class="gen-progress-wrap" id="genProgressWrap">
+                <svg class="gen-progress-circle" viewBox="0 0 180 180">
+                  <circle class="gen-progress-bg" cx="90" cy="90" r="80" />
+                  <circle class="gen-progress-fill" id="genProgressCircle" cx="90" cy="90" r="80" />
+                </svg>
+                <div class="gen-progress-text" id="genProgressText">0%</div>
               </div>
+              <p class="gen-hint" id="genHint">Подождите, пока материалы будут готовы</p>
             </div>
           </div>
         </div>

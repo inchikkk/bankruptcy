@@ -97,35 +97,49 @@ body {
   align-items: center;
   justify-content: center;
 }
-.gen-spinner-wrap { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; }
-.gen-spinner {
-  width: 160px;
-  height: 160px;
-  border: 6px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  position: absolute;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.gen-progress-track {
-  width: 140px;
-  height: 8px;
-  background: var(--border);
-  border-radius: 4px;
-  overflow: hidden;
+.gen-progress-wrap {
   position: relative;
-  z-index: 2;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gen-progress-circle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.gen-progress-bg {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 12;
 }
 .gen-progress-fill {
-  height: 100%;
-  background: var(--primary);
-  width: 0%;
-  border-radius: 4px;
-  transition: width 0.3s ease;
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-dasharray: 502;
+  stroke-dashoffset: 502;
+  transition: stroke-dashoffset 0.3s ease;
 }
-.gen-progress-text { margin-top: 24px; font-size: 18px; font-weight: 700; color: var(--text); }
-.gen-hint { margin-top: 8px; font-size: 14px; color: var(--text-secondary); }
+.gen-progress-text {
+  position: absolute;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  pointer-events: none;
+}
+.gen-hint {
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 200px;
+  line-height: 1.4;
+}
 /* Case header */
 .case-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
 .case-header-left h1 { font-size: 32px; font-weight: 800; color: var(--text); margin-bottom: 4px; }

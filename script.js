@@ -136,19 +136,39 @@ function renderDebtsPanel() {
 
 // === Анимация загрузки ===
 function animateLoading() {
-  var fill = $('genProgressFill');
+  var circle = $('genProgressCircle');
   var text = $('genProgressText');
-  if (!fill || !text) return;
+  var hint = $('genHint');
+  if (!circle || !text) return;
+  
   var progress = 0;
+  var circumference = 502; // 2 * PI * 80 ≈ 502
+  var dotsCount = 0;
+  
+  // Анимация многоточия
+  var dotsInterval = setInterval(function() {
+    dotsCount = (dotsCount % 3) + 1;
+    var dots = '';
+    for (var i = 0; i < dotsCount; i++) dots += '.';
+    if (hint) hint.textContent = 'Подождите, пока материалы будут готовы' + dots;
+  }, 400);
+  
   var interval = setInterval(function() {
     progress += Math.random() * 8 + 2;
     if (progress >= 100) {
       progress = 100;
       clearInterval(interval);
+      clearInterval(dotsInterval);
+      if (hint) hint.textContent = 'Подождите, пока материалы будут готовы.';
+      // Заполняем круг на 100%
+      circle.style.strokeDashoffset = circumference - (circumference * progress / 100);
+      text.textContent = Math.round(progress) + '%';
       setTimeout(function() { generateCase(); showCase(); }, 300);
+      return;
     }
-    fill.style.width = progress + '%';
-    text.textContent = 'Генерация дела ' + Math.round(progress) + '%';
+    // Обновляем прогресс-бар
+    circle.style.strokeDashoffset = circumference - (circumference * progress / 100);
+    text.textContent = Math.round(progress) + '%';
   }, 150);
 }
 
