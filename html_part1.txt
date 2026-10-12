@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Симулятор банкротства</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header" id="appHeader">
+      <div class="header-left">
+        <div class="logo-mark">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 9l10 6 10-6-10-6z"/><line x1="2" y1="9" x2="22" y2="9"/><path d="M12 15v6"/><path d="M6 9v6"/><path d="M18 9v6"/></svg>
+          <span class="logo-text">ЮРИДИЧЕСКАЯ ИГРА</span>
+        </div>
+      </div>
+      <div class="header-breadcrumb" id="headerBreadcrumb">
+        <span class="breadcrumb-dot"></span>
+        <span class="breadcrumb-text">Главная</span>
+      </div>
+    </header>
+    <main class="main-content" id="mainContent">
+      <div class="screen active" id="genesisScreen">
+        <div class="genesis-layout">
+          <div class="genesis-text">
+            <div class="section-tag">
+              <span class="tag-line"></span>
+              <span class="tag-label">НОВОЕ ДЕЛО</span>
+            </div>
+            <h1 class="genesis-title">Подготовка<br>материалов дела</h1>
+            <p class="genesis-desc">Формируем данные должника, сведения об имуществе и список кредиторов.</p>
+            <div class="genesis-actions">
+              <button class="btn-primary" data-action="play">Сгенерировать дело</button>
+              <button class="btn-ghost" data-action="history">История дел</button>
+            </div>
+          </div>
+          <div class="genesis-visual" id="genesisVisual">
+            <div class="generation-card" id="generationCard">
+              <div class="gen-spinner-wrap" id="genSpinnerWrap">
+                <div class="gen-spinner" id="genSpinner"></div>
+                <div class="gen-progress-track">
+                  <div class="gen-progress-fill" id="genProgressFill"></div>
+                </div>
+                <p class="gen-progress-text" id="genProgressText">Генерация дела 0%</p>
+                <p class="gen-hint">Подождите, пока материалы будут готовы.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

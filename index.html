@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Симулятор банкротства</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header" id="appHeader">
+      <div class="header-left">
+        <div class="logo-mark">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 9l10 6 10-6-10-6z"/><line x1="2" y1="9" x2="22" y2="9"/><path d="M12 15v6"/><path d="M6 9v6"/><path d="M18 9v6"/></svg>
+          <span class="logo-text">ЮРИДИЧЕСКАЯ ИГРА</span>
+        </div>
+      </div>
+      <div class="header-breadcrumb" id="headerBreadcrumb">
+        <span class="breadcrumb-dot"></span>
+        <span class="breadcrumb-text">Главная</span>
+      </div>
+    </header>
+    <main class="main-content" id="mainContent">
+      <div class="screen active" id="genesisScreen">
+        <div class="genesis-layout">
+          <div class="genesis-text">
+            <div class="section-tag">
+              <span class="tag-line"></span>
+              <span class="tag-label">НОВОЕ ДЕЛО</span>
+            </div>
+            <h1 class="genesis-title">Подготовка<br>материалов дела</h1>
+            <p class="genesis-desc">Формируем данные должника, сведения об имуществе и список кредиторов.</p>
+            <div class="genesis-actions">
+              <button class="btn-primary" data-action="play">Сгенерировать дело</button>
+              <button class="btn-ghost" data-action="history">История дел</button>
+              <button class="btn-ghost" data-action="settings">Настройки</button>
+            </div>
+          </div>
+          <div class="genesis-visual" id="genesisVisual">
+            <div class="generation-card" id="generationCard">
+              <div class="gen-spinner-wrap" id="genSpinnerWrap">
+                <div class="gen-spinner" id="genSpinner"></div>
+                <div class="gen-progress-track">
+                  <div class="gen-progress-fill" id="genProgressFill"></div>
+                </div>
+                <p class="gen-progress-text" id="genProgressText">Генерация дела 0%</p>
+                <p class="gen-hint">Подождите, пока материалы будут готовы.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen hidden" id="caseScreen">
+        <div class="case-header">
+          <div class="case-header-left">
+            <h1 class="case-title">Дело о банкротстве</h1>
+            <p class="case-subtitle" id="caseSubtitle"></p>
+          </div>
+          <div class="case-header-right">
+            <span class="badge-educational">Учебный пример</span>
+            <button class="btn-pause" data-action="pause">Пауза</button>
+          </div>
+        </div>
+        <div class="tabs-bar" id="tabsBar">
+          <button class="tab-btn active" data-panel="debtorTab">Данные должника</button>
+          <button class="tab-btn" data-panel="workspaceTab">Рабочее место</button>
+          <button class="tab-btn" data-panel="debtTab">Задолженность</button>
+          <button class="tab-btn" data-panel="placeholder1Tab">Заглушка 1</button>
+          <button class="tab-btn" data-panel="placeholder2Tab">Заглушка 2</button>
+          <button class="tab-btn" data-panel="placeholder3Tab">Заглушка 3</button>
+          <button class="tab-btn" data-panel="placeholder5Tab">Заглушка 5</button>
+          <button class="tab-btn" data-panel="placeholder6Tab">Заглушка 6</button>
+        </div>
+        <div class="panels-area">
+          <div class="panel active" id="debtorTab">
+            <div class="two-col">
+              <div class="card card-debtor">
+                <div class="card-header">
+                  <h2 class="card-title">Данные должника</h2>
+                  <div class="person-btn" id="personAvatar" title="Детали должника">
+                    <svg class="avatar-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5d0a0"/><stop offset="100%" stop-color="#e0b080"/></linearGradient>
+                        <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4a6cff"/><stop offset="100%" stop-color="#2a4cd6"/></linearGradient>
+                      </defs>
+                      <circle cx="100" cy="70" r="35" fill="url(#skin)"/>
+                      <ellipse cx="70" cy="55" rx="12" ry="8" fill="#2a1a0a"/>
+                      <ellipse cx="130" cy="55" rx="12" ry="8" fill="#2a1a0a"/>
+                      <circle cx="70" cy="55" r="3" fill="#000"/>
+                      <circle cx="130" cy="55" r="3" fill="#000"/>
+                      <path d="M70 80 Q100 95 130 80" stroke="#2a1a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+                      <rect x="75" y="100" width="50" height="40" rx="10" fill="url(#shirt)"/>
+                      <path d="M55 140 H145 L135 190 H65 Z" fill="#d9d9d9"/>
+                    </svg>
+                    <span class="person-label">Детали должника</span>
+                  </div>
+                </div>
+                <div class="debtor-name" id="debtorName"></div>
+                <div class="debtor-grid" id="debtorGrid"></div>
+              </div>
+              <div class="card card-property">
+                <div class="card-header">
+                  <h2 class="card-title">Имущество</h2>
+                  <span class="card-count" id="propertyCount"></span>
+                </div>
+                <div id="propertyList"></div>
+                <div class="property-total" id="propertyTotal"></div>
+              </div>
+            </div>
+            <div class="case-summary" id="caseSummary"></div>
+          </div>
+          <div class="panel hidden" id="workspaceTab"><div class="empty-panel"><div class="empty-icon">💼</div><h2>Рабочее место</h2><p>Здесь будут размещены различные функции</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+          <div class="panel hidden" id="debtTab"><div class="debts-full"><h2 class="section-label">Кредиторы</h2><div id="creditorsList"></div><div class="debt-total-block" id="debtTotalBlock"></div></div></div>
+          <div class="panel hidden" id="placeholder1Tab"><div class="empty-panel"><h2>Заглушка 1</h2><p>Этот блок пока не реализован</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+          <div class="panel hidden" id="placeholder2Tab"><div class="empty-panel"><h2>Заглушка 2</h2><p>Этот блок пока не реализован</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+          <div class="panel hidden" id="placeholder3Tab"><div class="empty-panel"><h2>Заглушка 3</h2><p>Этот блок пока не реализован</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+          <div class="panel hidden" id="placeholder5Tab"><div class="empty-panel"><h2>Заглушка 5</h2><p>Этот блок пока не реализован</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+          <div class="panel hidden" id="placeholder6Tab"><div class="empty-panel"><h2>Заглушка 6</h2><p>Этот блок пока не реализован</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+        </div>
+      </div>
+      <div class="screen hidden" id="statsScreen">
+        <div class="genesis-layout">
+          <div class="genesis-text">
+            <div class="section-tag"><span class="tag-line"></span><span class="tag-label">СИМУЛЯТОР БАНКРОТСТВА</span></div>
+            <h1 class="genesis-title">Статистика</h1>
+            <p class="genesis-desc">Здесь будут инструменты для отчёта.<br><br>Раздел пока не доступен. Инструменты отчётности появятся в следующих версиях симулятора.</p>
+            <button class="btn-primary" data-action="back" style="margin-top:24px">Назад</button>
+          </div>
+          <div class="genesis-visual"><div class="generation-card"><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+        </div>
+      </div>
+      <div class="screen hidden" id="historyScreen">
+        <div class="genesis-layout">
+          <div class="genesis-text">
+            <div class="section-tag"><span class="tag-line"></span><span class="tag-label">ИСТОРИЯ ДЕЛ</span></div>
+            <h1 class="genesis-title">Архив дел</h1>
+            <p class="genesis-desc">Сохранённые результаты прошлых игр.</p>
+            <button class="btn-primary" data-action="back" style="margin-top:24px">Назад</button>
+          </div>
+          <div class="genesis-visual"><div class="generation-card history-scroll" id="historyScroll"><div id="historyList"></div></div></div>
+        </div>
+      </div>
+      <div class="pause-overlay hidden" id="pauseOverlay">
+        <div class="pause-card">
+          <h2>Пауза</h2>
+          <div class="pause-actions">
+            <button class="btn-primary" data-action="resume">Вернуться к делу</button>
+            <button class="btn-ghost" data-action="exit">Выход в главное меню</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="app-footer">
+      <span>Каждое дело — новая стратегия.</span>
+      <span class="footer-disclaimer">Игровая симуляция, не юридическая консультация</span>
+    </footer>
+  </div>
+  <!-- Settings overlay - moved outside main to prevent interference -->
+  <div class="settings-overlay hidden" id="settingsOverlay">
+    <div class="settings-card">
+      <h2>Настройки</h2>
+      <div class="settings-body">
+        <div class="setting-row"><span>Тема</span><select id="themeSelect" class="select-light"><option value="dark">Тёмная</option><option value="light">Светлая</option><option value="blue">Синяя</option></select></div>
+        <div class="setting-row"><span>Звук</span><label class="switch"><input type="checkbox" id="soundToggle"/><span class="slider-light"></span></label></div>
+        <div class="setting-row"><span>Громкость</span><input type="range" id="volume" min="0" max="100" value="60"/></div>
+        <div class="setting-row"><span>Фоновая музыка</span><label class="switch"><input type="checkbox" id="bgMusicToggle"/><span class="slider-light"></span></label></div>
+        <div class="setting-row"><span>Громкость музыки</span><input type="range" id="musicVolume" min="0" max="100" value="35"/></div>
+      </div>
+      <button class="btn-ghost" data-action="back" style="margin-top:20px">Назад</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

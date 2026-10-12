@@ -1,0 +1,27 @@
+{
+  "banks": [
+    {"id": 1, "name": "Сбербанк", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 2, "name": "ВТБ", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 3, "name": "Альфа-Банк", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 4, "name": "Газпромбанк", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 5, "name": "Россельхозбанк", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 6, "name": "Тинькофф", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 7, "name": "Райффайзенбанк", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 8, "name": "ЮниCredit", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 9, "name": "Московский Банк", "type": "Банк", "debt": 0, "overdueMonths": 0},
+    {"id": 10, "name": "Совкомбанк", "type": "Банк", "debt": 0, "overdueMonths": 0}
+  ],
+  "mfo": [
+    {"id": 11, "name": "МФК \"Деньги\"", "type": "МФО", "debt": 0, "overdueMonths": 0},
+    {"id": 12, "name": "Экспресс-Кредит", "type": "МФО", "debt": 0, "overdueMonths": 0},
+    {"id": 13, "name": "Русский Займ", "type": "МФО", "debt": 0, "overdueMonths": 0},
+    {"id": 14, "name": "Кармани", "type": "МФО", "debt": 0, "overdueMonths": 0},
+    {"id": 15, "name": "Займка", "type": "МФО", "debt": 0, "overdueMonths": 0}
+  ],
+  "tax": [
+    {"id": 16, "name": "Федеральная налоговая служба", "type": "ФНС", "debt": 0, "overdueMonths": 0}
+  ],
+  "utility": [
+    {"id": 17, "name": "ЖКХ", "type": "ЖКХ", "debt": 0, "overdueMonths": 0}
+  ]
+}

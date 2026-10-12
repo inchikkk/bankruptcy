@@ -1,0 +1,11 @@
+/* Side squares - left edge of page */
+.side-squares{position:fixed;left:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:100;padding:0 14px}
+.sq-row{display:flex;align-items:center;gap:10px}
+.sq-name{font-size:13px;font-weight:600;color:rgba(245,246,255,.85);white-space:nowrap;user-select:none;letter-spacing:.3px}
+.sq-name::before{content:"←";margin-right:2px}
+
+.sq-label{font-size:18px;font-weight:700;color:rgba(245,246,255,.7);user-select:none}
+.square:hover .sq-label{color:#fff}
+
+/* Square tiles - 6 objects as in the sketch */
+.square{width:64px;height:64px;border:3px solid #fff;border-radius:10px;background:rgba(0,0,0,.35);display:flex;align-items:
