@@ -31,21 +31,27 @@
             <h1 class="genesis-title">Подготовка<br>материалов дела</h1>
             <p class="genesis-desc">Формируем данные должника, сведения об имуществе и список кредиторов.</p>
             <div class="genesis-actions">
-              <button class="btn-primary" data-action="play">Сгенерировать дело</button>
-              <button class="btn-ghost" data-action="history">История дел</button>
-              <button class="btn-ghost" data-action="settings">Настройки</button>
+              <button class="btn-primary" data-action="play">
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Сгенерировать дело
+              </button>
+              <button class="btn-ghost" data-action="history">
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                История дел
+              </button>
+              <button class="btn-ghost" data-action="settings">
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Настройки
+              </button>
+              <button class="btn-ghost" data-action="exit">
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Выйти
+              </button>
             </div>
           </div>
-          <div class="genesis-visual" id="genesisVisual">
-            <div class="generation-card" id="generationCard">
-              <div class="gen-progress-wrap" id="genProgressWrap">
-                <svg class="gen-progress-circle" viewBox="0 0 180 180">
-                  <circle class="gen-progress-bg" cx="90" cy="90" r="80" />
-                  <circle class="gen-progress-fill" id="genProgressCircle" cx="90" cy="90" r="80" />
-                </svg>
-                <div class="gen-progress-text" id="genProgressText">0%</div>
-              </div>
-              <p class="gen-hint" id="genHint">Подождите, пока материалы будут готовы</p>
+          <div class="genesis-visual">
+            <div class="generation-card" id="rightBlockContainer">
+              <!-- Пустой блок по умолчанию -->
             </div>
           </div>
         </div>
@@ -167,20 +173,6 @@
       <span>Каждое дело — новая стратегия.</span>
       <span class="footer-disclaimer">Игровая симуляция, не юридическая консультация</span>
     </footer>
-  </div>
-  <!-- Settings overlay - moved outside main to prevent interference -->
-  <div class="settings-overlay hidden" id="settingsOverlay">
-    <div class="settings-card">
-      <h2>Настройки</h2>
-      <div class="settings-body">
-        <div class="setting-row"><span>Тема</span><select id="themeSelect" class="select-light"><option value="dark">Тёмная</option><option value="light">Светлая</option><option value="blue">Синяя</option></select></div>
-        <div class="setting-row"><span>Звук</span><label class="switch"><input type="checkbox" id="soundToggle"/><span class="slider-light"></span></label></div>
-        <div class="setting-row"><span>Громкость</span><input type="range" id="volume" min="0" max="100" value="60"/></div>
-        <div class="setting-row"><span>Фоновая музыка</span><label class="switch"><input type="checkbox" id="bgMusicToggle"/><span class="slider-light"></span></label></div>
-        <div class="setting-row"><span>Громкость музыки</span><input type="range" id="musicVolume" min="0" max="100" value="35"/></div>
-      </div>
-      <button class="btn-ghost" data-action="back" style="margin-top:20px">Назад</button>
-    </div>
   </div>
   <script src="script.js"></script>
 </body>

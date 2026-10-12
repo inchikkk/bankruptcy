@@ -136,6 +136,20 @@ function renderDebtsPanel() {
 
 // === Анимация загрузки ===
 function animateLoading() {
+  var container = $('rightBlockContainer');
+  if (!container) return;
+
+  // Вставляем блок загрузки в правую карточку
+  container.innerHTML =
+    '<div class="gen-progress-wrap">' +
+      '<svg class="gen-progress-circle" viewBox="0 0 200 200" aria-hidden="true">' +
+        '<circle class="gen-progress-bg" cx="100" cy="100" r="80"></circle>' +
+        '<circle class="gen-progress-fill" id="genProgressCircle" cx="100" cy="100" r="80"></circle>' +
+      '</svg>' +
+      '<span class="gen-progress-text" id="genProgressText">0%</span>' +
+    '</div>' +
+    '<p class="gen-hint" id="genHint">Подождите, пока материалы будут готовы...</p>';
+
   var circle = $('genProgressCircle');
   var text = $('genProgressText');
   var hint = $('genHint');
