@@ -461,6 +461,7 @@ document.querySelectorAll('[data-action]').forEach(function(btn) {
       var statsScreen = $('statsScreen');
       var achievementsScreen = $('achievementsScreen');
       var historyScreen = $('historyScreen');
+      var characterScreen = $('characterScreen');
       if (pauseOverlay && !pauseOverlay.classList.contains('hidden')) {
         pauseOverlay.classList.add('hidden');
       } else if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) {
@@ -472,6 +473,8 @@ document.querySelectorAll('[data-action]').forEach(function(btn) {
       } else if (achievementsScreen && !achievementsScreen.classList.contains('hidden')) {
         showGenesis();
       } else if (historyScreen && !historyScreen.classList.contains('hidden')) {
+        showGenesis();
+      } else if (characterScreen && !characterScreen.classList.contains('hidden')) {
         showGenesis();
       } else {
         showGenesis();
@@ -509,6 +512,11 @@ document.addEventListener('keydown', function(e) {
   // Сначала проверяем настройки
   if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) {
     settingsOverlay.classList.add('hidden');
+    return;
+  }
+  // Пауза работает только на экране дела (когда играет)
+  var caseScreen = $('caseScreen');
+  if (!caseScreen || caseScreen.classList.contains('hidden')) {
     return;
   }
   // Переключаем паузу
