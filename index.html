@@ -123,7 +123,17 @@
             </div>
             <div class="case-summary" id="caseSummary"></div>
           </div>
-          <div class="panel hidden" id="workspaceTab"><div class="empty-panel"><div class="empty-icon">💼</div><h2>Рабочее место</h2><p>Здесь будут размещены различные функции</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
+          <div class="panel hidden" id="workspaceTab">
+            <div class="card" id="workspacePanel" style="max-width:500px;margin:0 auto;text-align:center;padding:40px;">
+              <div style="font-size:48px;margin-bottom:16px;">💼</div>
+              <h2 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:12px;">Рабочее место</h2>
+              <p style="color:var(--text-secondary);margin-bottom:24px;">Здесь вы можете получить новое дело для работы</p>
+              <button class="btn-primary" id="getCaseBtn" style="width:100%;max-width:280px;">
+                <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Получить дело
+              </button>
+            </div>
+          </div>
           <div class="panel hidden" id="debtTab"><div class="debts-full"><h2 class="section-label">Кредиторы</h2><div id="creditorsList"></div><div class="debt-total-block" id="debtTotalBlock"></div></div></div>
           <div class="panel hidden" id="placeholder1Tab"><div class="empty-panel"><h2>Заглушка 1</h2><p>Этот блок пока не реализован</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
           <div class="panel hidden" id="placeholder2Tab"><div class="empty-panel"><h2>Заглушка 2</h2><p>Этот блок пока не реализован</p><span class="in-dev">В РАЗРАБОТКЕ</span></div></div>
@@ -174,6 +184,20 @@
             <button class="btn-primary" data-action="back" style="margin-top:24px">Назад</button>
           </div>
           <div class="genesis-visual"><div class="generation-card history-scroll" id="settingsScroll"></div></div>
+        </div>
+      </div>
+      <div class="screen hidden" id="characterScreen">
+        <div class="genesis-layout">
+          <div class="genesis-text">
+            <div class="section-tag"><span class="tag-line"></span><span class="tag-label">НОВЫЙ ПЕРСОНАЖ</span></div>
+            <h1 class="genesis-title">Создайте персонажа</h1>
+            <p class="genesis-desc">Введите имя вашего персонажа для отображения в делах.</p>
+            <div style="margin-top:20px;">
+              <input type="text" id="characterNameInput" placeholder="Имя персонажа" maxlength="30" style="width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:var(--surface);color:var(--text);margin-bottom:16px;" />
+              <button class="btn-primary" id="confirmCharacterBtn" style="width:100%;">Подтвердить и начать дело</button>
+            </div>
+          </div>
+          <div class="genesis-visual"><div class="generation-card" style="display:flex;align-items:center;justify-content:center;min-height:300px;color:var(--text-secondary);">Здесь появится информация о персонаже</div></div>
         </div>
       </div>
       <div class="pause-overlay hidden" id="pauseOverlay">

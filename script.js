@@ -135,8 +135,8 @@ function renderDebtsPanel() {
 }
 
 // === Анимация загрузки ===
-function animateLoading() {
-  var container = $('rightBlockContainer');
+function animateLoading(containerId) {
+  var container = $(containerId || 'rightBlockContainer');
   if (!container) return;
 
   // Вставляем блок загрузки в правую карточку
@@ -177,7 +177,7 @@ function animateLoading() {
       // Заполняем круг на 100%
       circle.style.strokeDashoffset = circumference - (circumference * progress / 100);
       text.textContent = Math.round(progress) + '%';
-      setTimeout(function() { generateCase(); showCase(); }, 300);
+      setTimeout(function() { generateCase(); showCase(); switchTab('debtorTab'); }, 300);
       return;
     }
     // Обновляем прогресс-бар
@@ -220,6 +220,111 @@ function showCase() {
   renderCase();
   renderDebtsPanel();
   updateBreadcrumb('Дело / Данные должника');
+}
+
+// === Система сохранений (персонаж + текущее дело) ===
+function loadSave() {
+  try {
+    var data = localStorage.getItem('bankruptcy_save');
+    return data ? JSON.parse(data) : null;
+  } catch(e) { return null; }
+}
+function saveGame(characterName, caseData) {
+  var save = {
+    characterName: characterName || 'Без имени',
+    currentCase: caseData,
+    timestamp: Date.now()
+  };
+  localStorage.setItem('bankruptcy_save', JSON.stringify(save));
+}
+function deleteSave() {
+  localStorage.removeItem('bankruptcy_save');
+}
+
+// === Экран персонажа ===
+function showCharacterScreen() {
+  hideAllOverlays();
+  showScreen('characterScreen');
+  updateBreadcrumb('Создание персонажа');
+  var input = $('characterNameInput');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  var confirmBtn = $('confirmCharacterBtn');
+  if (confirmBtn) {
+    confirmBtn.onclick = function() {
+      var name = input.value.trim();
+      if (!name) {
+        alert('Введите имя персонажа');
+        return;
+      }
+      // Генерируем новое дело и сохраняем
+      generateCase();
+      window.currentCase.characterName = name;
+      saveGame(name, window.currentCase);
+      showCase();
+      switchTab('workspaceTab');
+    };
+  }
+}
+
+// === Начать новую игру (с экрана главного) ===
+function startNewGame() {
+  showCharacterScreen();
+}
+
+// === Продолжить игру (с сохранения) ===
+function continueGame() {
+  var save = loadSave();
+  if (save && save.currentCase) {
+    window.currentCase = save.currentCase;
+    if (save.characterName) window.currentCase.characterName = save.characterName;
+    showCase();
+    switchTab('workspaceTab');
+  } else {
+    startNewGame();
+  }
+}
+
+// === Обновить кнопки на главном экране в зависимости от сохранений ===
+function updateGenesisButtons() {
+  var save = loadSave();
+  var playBtn = document.querySelector('[data-action="play"]');
+  if (!playBtn) return;
+  if (save && save.currentCase) {
+    // Делаем кнопку "Продолжить игру"
+    var svg = playBtn.querySelector('svg');
+    var text = playBtn.childNodes[playBtn.childNodes.length - 1];
+    playBtn.className = 'btn-primary';
+    if (svg) svg.style.display = '';
+    if (text) text.nodeValue = 'Продолжить игру';
+    playBtn.onclick = function(e) { e.preventDefault(); continueGame(); };
+    // Добавляем кнопку "Начать новую игру"
+    var actionsDiv = playBtn.closest('.genesis-actions');
+    if (actionsDiv && !actionsDiv.querySelector('[data-action="newgame"]')) {
+      var newGameBtn = document.createElement('button');
+      newGameBtn.className = 'btn-ghost';
+      newGameBtn.dataset.action = 'newgame';
+      newGameBtn.innerHTML = '<svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Начать новую игру';
+      newGameBtn.onclick = function() { startNewGame(); };
+      actionsDiv.insertBefore(newGameBtn, playBtn.nextSibling);
+    }
+  } else {
+    // Кнопка "Начать новую игру"
+    playBtn.className = 'btn-primary';
+    playBtn.onclick = function(e) { e.preventDefault(); startNewGame(); };
+    var svg = playBtn.querySelector('svg');
+    var text = playBtn.childNodes[playBtn.childNodes.length - 1];
+    if (svg) svg.style.display = '';
+    if (text) text.nodeValue = 'Начать новую игру';
+    // Убираем лишнюю кнопку, если была
+    var actionsDiv = playBtn.closest('.genesis-actions');
+    if (actionsDiv) {
+      var old = actionsDiv.querySelector('[data-action="newgame"]');
+      if (old) old.remove();
+    }
+  }
 }
 
 function updateBreadcrumb(text) {
@@ -340,7 +445,8 @@ function showSettings() {
 document.querySelectorAll('[data-action]').forEach(function(btn) {
   btn.addEventListener('click', function() {
     var action = btn.dataset.action;
-    if (action === 'play') { showGenesis(); animateLoading(); }
+    if (action === 'play') { continueGame(); }
+    else if (action === 'newgame') { startNewGame(); }
     else if (action === 'history') { showHistory(); }
     else if (action === 'stats') { showStats(); }
     else if (action === 'achievements') { showAchievements(); }
@@ -383,6 +489,18 @@ document.querySelectorAll('.tab-btn').forEach(function(btn) {
 
 var pauseBtn = document.querySelector('[data-action="pause"]');
 if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
+
+var getCaseBtn = $('getCaseBtn');
+if (getCaseBtn) {
+  getCaseBtn.addEventListener('click', function() {
+    animateLoading('workspacePanel');
+    setTimeout(function() {
+      generateCase();
+      showCase();
+      switchTab('debtorTab');
+    }, 300);
+  });
+}
 
 document.addEventListener('keydown', function(e) {
   if (e.key !== 'Escape' && e.keyCode !== 27) return;
@@ -468,6 +586,7 @@ function initApp() {
   var theme = localStorage.getItem('theme') || 'dark';
   document.body.setAttribute('data-theme', theme);
   showGenesis();
+  updateGenesisButtons();
 }
 
 // === Рендер настроек ===
